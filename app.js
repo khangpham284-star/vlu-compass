@@ -204,7 +204,7 @@ $('#sheetHandle').setAttribute('role','button');$('#sheetHandle').setAttribute('
 $('#sheetHandle').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setExpanded(!expanded)}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(panel==='places'||panel==='place')closePlacePanel();else if(expanded)setExpanded(false);else if(selected)clearSelection()}});
 new ResizeObserver(()=>{if(selectedPlace){const p=selectedPlace;fitPoints([[p.x-100,p.y-80],[p.x+100,p.y+80]],1.5,40)}else if(activePoints)fitPoints(activePoints,viewport.clientWidth<700?1.18:1.65,55);else fitCampus()}).observe(viewport);
-$('#downloadBtn').onclick=()=>toast('Tải bản đồ: chức năng đang phát triển trong bản prototype.');
+/* Tải PDF: link thật tới assets/ban-do-vlu.pdf */
 wireChips();$('#weatherIcon').textContent=isRain?'🌧':'☀️';$('#weatherText').textContent=isRain?'Mưa nhẹ':'Nắng';$('#weatherTemp').textContent=isRain?'26°':'29°';$('#weatherChip').setAttribute('aria-label',`Thời tiết demo: ${isRain?'Mưa nhẹ, 26 độ':'Nắng, 29 độ'}`);$('#qrLabel').textContent=`QR ${qrPoints[requestedQr]?requestedQr:'01'}`;fitCampus();
 if(!qrPoints[requestedQr])toast('Điểm QR này chưa được thiết lập. Đang hiển thị vị trí mẫu ở B3.');
 function state(){return {qr:requestedQr,origin:qr.label,building:selected,route:selected?(activeRoute===0?'suggested':'alternative'):null,photoExpanded:expanded,place:selectedPlace?.id||null,panel,prototype:true}}
