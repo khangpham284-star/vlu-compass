@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#eef0ec">
+  <title>VLU Campus Map · Big Mon</title>
+  <meta name="description" content="Chạm vào tòa nhà để xem đường đi từ điểm QR, nhận diện tòa qua hình ảnh và lưu bản đồ VLU.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23c8203d'/%3E%3Cpath d='m8 8 8 17L24 8h-5l-3 8-3-8Z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css?v=10">
+</head>
+<body>
+<main class="app">
+  <header class="topbar">
+    <a class="brand" href="?qr=01" aria-label="Văn Lang University, Main Campus, về bản đồ"><img class="brand-mark" src="assets/vlu-mark.png" alt=""><span class="brand-copy"><strong>Main Campus</strong><small>69/68 Đặng Thùy Trâm · Bình Lợi Trung</small></span></a>
+    <div class="header-actions"><div class="weather-chip" id="weatherChip" aria-label="Thời tiết demo: Nắng, 29 độ"><span id="weatherIcon" aria-hidden="true">☀️</span><span id="weatherText">Nắng</span><strong id="weatherTemp">29°</strong></div>
+    <button type="button" class="download" id="downloadBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v11m-4-4 4 4 4-4M5 15v5h14v-5"/></svg><span>Tải PDF</span></button></div>
+  </header>
+  <section class="map-area source-fidelity" aria-label="Bản đồ khuôn viên VLU">
+    <div class="location-pill"><span class="pin-dot"></span><span>Lối lên hầm B3 <span class="qr-tag" id="qrLabel">QR 01</span></span></div>
+    <div class="map-viewport" id="mapViewport">
+    <svg id="campus" viewBox="240 -20 950 800" aria-label="Sơ đồ các tòa nhà VLU, chạm tòa nhà để chọn điểm đến" role="group">
+      <defs>
+        <clipPath id="sourceCampusClip"><path d="M270 319H477V176H588V35H1134V727H270Z"/></clipPath>
+        <pattern id="lawn" width="17" height="17" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r=".9" fill="#7c9875" opacity=".2"/></pattern>
+        <filter id="pointShadow" x="-100%" y="-100%" width="300%" height="300%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".18"/></filter>
+      </defs>
+      <g id="mapContent">
+        <image class="source-image" href="assets/campus-clean.png?v=1" x="0" y="0" width="1134" height="727" preserveAspectRatio="none" clip-path="url(#sourceCampusClip)" aria-label="Bản đồ gốc VLU 2026 do nhóm cung cấp"/>
+        <path class="outer-ground" d="M290 650 329 325 422 345Q540 354 589 290L615 159Q635 89 750 72L752 40H794L797 72 913 81Q945 84 958 129L1000 315 1046 455 1135 650Z"/>
+        <path class="ring-road" d="M307 643 342 348 426 367Q547 367 598 285L624 161Q649 87 765 86L913 92Q936 94 948 130L988 320 1032 450 1112 640 307 643"/>
+        <path class="lane-dash" d="M307 643 342 348 426 367Q547 367 598 285L624 161Q649 87 765 86L913 92Q936 94 948 130L988 320 1032 450 1112 640 307 643"/>
+        <path class="garden" d="M666 141Q739 100 786 135T882 138L905 214H670Z"/>
+        <path d="M666 141Q739 100 786 135T882 138L905 214H670Z" fill="url(#lawn)"/>
+        <path class="walkway" d="M640 250V632M640 322H967M416 492H1009M811 312V630M414 373V634M521 471V633M903 493V630M992 478V631M366 632H1045"/>
+        <path class="walkway narrow" d="M777 94V229M597 424H661"/>
+        <g class="map-building" data-building="A" role="button" tabindex="0" aria-label="Chỉ đường đến tòa A" aria-pressed="false"><path d="M660 226H920V310H660Z"/><text x="790" y="268">A</text><text class="building-sub" x="790" y="291">THƯ VIỆN · HỘI TRƯỜNG</text></g>
+        <g class="map-building unavailable" data-building="B" role="button" tabindex="0" aria-label="Tòa B, chưa hoạt động"><path d="M844 349H978L995 416 959 429H844Z"/><text x="918" y="385">B</text><text class="building-sub" x="918" y="408">CHƯA HOẠT ĐỘNG</text></g>
+        <g class="map-building" data-building="C" role="button" tabindex="0" aria-label="Chỉ đường đến tòa C" aria-pressed="false"><path d="M855 436H997V473H855Z"/><text x="925" y="460">C</text></g>
+        <ellipse class="water" cx="728" cy="409" rx="85" ry="78"/>
+        <g class="map-building" data-building="K" role="button" tabindex="0" aria-label="Chỉ đường đến tòa K" aria-pressed="false"><ellipse cx="728" cy="409" rx="64" ry="62"/><text x="728" y="417">K</text></g>
+        <g class="map-building" data-building="J" role="button" tabindex="0" aria-label="Chỉ đường đến tòa J" aria-pressed="false"><path d="M426 375H606V470H426Z"/><text x="516" y="421">J</text><text class="building-sub" x="516" y="446">CÀ PHÊ · HỌC TẬP</text></g>
+        <g class="map-building" data-building="I" role="button" tabindex="0" aria-label="Chỉ đường đến tòa I" aria-pressed="false"><path d="m364 369 49 12-42 239h-44Z"/><text x="369" y="494">I</text></g>
+        <rect class="sport" x="426" y="483" width="126" height="36" rx="6"/><text class="landmark" x="489" y="506">Sân thể thao</text>
+        <rect class="water" x="389" y="553" width="127" height="50" rx="5"/><text class="landmark" x="452" y="584">Hồ bơi</text>
+        <g class="map-building" data-building="G" role="button" tabindex="0" aria-label="Chỉ đường đến tòa G" aria-pressed="false"><path d="M525 532H690V537H729V625H525Z"/><text x="627" y="585">G</text></g>
+        <rect class="sport" x="738" y="536" width="33" height="89" rx="4"/>
+        <g class="map-building" data-building="F" role="button" tabindex="0" aria-label="Chỉ đường đến tòa F" aria-pressed="false"><path d="M782 533H873V625H782Z"/><text x="828" y="585">F</text></g>
+        <g class="map-building" data-building="D" role="button" tabindex="0" aria-label="Chỉ đường đến tòa D" aria-pressed="false"><path d="M943 535H1035V551H1041V612H1034V625H943Z"/><text x="990" y="585">D</text></g>
+        <rect class="workshop" x="863" y="666" width="261" height="29" rx="4"/><text class="landmark" x="994" y="686">XƯỞNG</text>
+        <path class="ramp" d="m896 612 9-48 10 48Z"/><text class="map-note" x="905" y="630">HẦM B3</text>
+        <g class="entrances" aria-hidden="true"><path d="M804 310h18M577 470h15M670 401v17M787 401v17M719 352h19M719 469h19M991 442v20M559 625h20M804 533h21M804 625h21M1037 570v20M368 620h-13M911 288v18"/></g>
+        <text class="street-label" x="790" y="38">CỔNG ĐẶNG THÙY TRÂM</text>
+        <text class="street-label" x="654" y="716">ĐƯỜNG DƯƠNG QUẢNG HÀM</text>
+        <text class="small-place" x="540" y="688">CỔNG PHỤ</text>
+        <g id="doorMarkers" aria-label="Chọn cửa vào tòa nhà"></g>
+        <g id="routes"></g>
+        <g id="destinationMarker"></g>
+        <g id="placeMarkers" aria-label="Các tiện ích và cổng trên bản đồ"></g>
+        <g id="originMarker" filter="url(#pointShadow)"><circle class="origin-halo" cx="903" cy="519" r="26"/><circle cx="903" cy="519" r="10" fill="#245cdf" stroke="white" stroke-width="5"/></g>
+        <g id="youTooltip" transform="translate(903 510)"><rect x="-67" y="-43" width="134" height="32" rx="10" fill="#245cdf"/><path d="m-5 -12 5 7 5-7" fill="#245cdf"/><text text-anchor="middle" x="0" y="-23">Bạn đang ở đây</text></g>
+      </g>
+    </svg>
+    </div>
+    <div class="map-controls" aria-label="Điều khiển bản đồ">
+      <button id="zoomIn" type="button" aria-label="Phóng to bản đồ">+</button><button id="zoomOut" type="button" aria-label="Thu nhỏ bản đồ">−</button>
+      <button id="fitMap" type="button" aria-label="Xem toàn bộ khuôn viên"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/><path d="M8 12h8M12 8v8"/></svg></button>
+      <button id="locate" type="button" aria-label="Về vị trí QR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg></button>
+    </div>
+    <button type="button" class="legend-toggle" id="legendToggle" aria-expanded="false" aria-controls="sheetContent"><span aria-hidden="true">☷</span> Chú thích & tiện ích</button>
+    
+    <section id="bottomSheet" class="bottom-sheet" aria-label="Điểm đến và hình ảnh tòa nhà">
+      <div class="sheet-handle" id="sheetHandle"><span></span></div>
+      <div id="sheetContent">
+        <div class="welcome"><div class="eyebrow">ĐI BỘ TRONG KHUÔN VIÊN</div><h1>Chọn tòa cần đến</h1><p>Chạm vào tòa trên bản đồ, hoặc tìm theo mã phòng.</p><form class="room-search" id="roomSearch"><input name="room" autocomplete="off" placeholder="Mã phòng, ví dụ J10.03" aria-label="Mã phòng"><button>Tìm</button></form><p class="room-search-error" id="roomSearchError"></p></div>
+        <div id="buildingChips" class="building-chips" aria-label="Chọn tòa nhà"></div>
+      </div>
+    </section>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <div id="liveStatus" class="sr-only" aria-live="polite"></div>
+  </section>
+</main>
+<script src="app.js?v=9" type="module"></script>
+</body>
+</html>
