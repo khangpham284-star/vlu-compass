@@ -1,5 +1,5 @@
-import {findRoutes,qrPoints,nodes,entrances} from './route.mjs?v=5';
-import {places,categories} from './places.mjs';
+import {findRoutes,qrPoints,nodes,entrances} from './route.js?v=5';
+import {places,categories} from './places.js';
 import {openIndoor,parseRoom} from './indoor.js';
 let pendingRoom='';
 const buildings = {
